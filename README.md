@@ -2,9 +2,17 @@
 
 Esta es una API simple para gestionar productos. Proporciona endpoints para obtener la lista de productos y detalles de cada producto.
 
+## pnpm
+
+Agregamos pnpm por un tema de vulnerabilidades y para mejorar la gestión de dependencias.
+
 ## Endpoints
 
 - `GET /api/productos`: Obtiene la lista de todos los productos.
+- `GET /api/productos/:id`: Obtiene los detalles de un producto específico por su ID.
+- `POST /api/productos`: Crea un nuevo producto.
+- `PUT /api/productos/:id`: Actualiza un producto existente por su ID.
+- `DELETE /api/productos/:id`: Elimina un producto existente por su ID.
 
 ## Ejemplo de respuesta
 
@@ -35,4 +43,3 @@ Esta es una API simple para gestionar productos. Proporciona endpoints para obte
 | Eliminar un producto   | DELETE | /api/productos/1 | Confirmación o sin contenido      | 200 o 204                 |
 
 /api/productos/{id}
-
