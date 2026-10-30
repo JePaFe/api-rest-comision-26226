@@ -1,0 +1,38 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Notebook Lenovo",
+      "price": 1900000,
+      "categoryId": 1
+    },
+    {
+      "id": 2,
+      "name": "Mouse Pro",
+      "price": 25000,
+      "categoryId": 2
+    },
+    {
+      "id": 4,
+      "name": "Lámpara",
+      "price": 22000,
+      "categoryId": 2
+    },
+    {
+      "id": 5,
+      "name": "Lámpara azul",
+      "price": 25000,
+      "categoryId": 1
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Computación"
+    },
+    {
+      "id": 2,
+      "name": "Periféricos"
+    }
+  ]
+}

@@ -2,12 +2,18 @@ import { Router } from "express";
 
 const router = Router();
 
-const categories = [
-  { id: 1, name: "Tecnología" },
-  { id: 2, name: "Hogar" },
-];
+import { readFile } from "fs/promises";
 
-router.get("/api/categorias", (req, res) => {
+const dataURL = new URL("../../data/catalog.json", import.meta.url);
+
+const readCatalog = async () => {
+  const catalogJSON = await readFile(dataURL, "utf-8");
+  const catalog = JSON.parse(catalogJSON);
+  return catalog;
+};
+
+router.get("/api/categories", async (req, res) => {
+  const { categories } = await readCatalog();
   res.json(categories);
 });
 
