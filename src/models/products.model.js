@@ -1,17 +1,4 @@
-import { readFile, writeFile } from "fs/promises";
-
-const dataURL = new URL("../../data/catalog.json", import.meta.url);
-
-const readCatalog = async () => {
-  const catalogJSON = await readFile(dataURL, "utf-8");
-  const catalog = JSON.parse(catalogJSON);
-  return catalog;
-};
-
-const writeCatalog = async (catalog) => {
-  const catalogJSON = JSON.stringify(catalog, null, 2);
-  await writeFile(dataURL, catalogJSON, "utf-8");
-};
+import { readCatalog, writeCatalog } from "./catalog.js";
 
 export const findAll = async (categoryId) => {
   const { products } = await readCatalog();
@@ -58,6 +45,9 @@ export const update = async (id, { name, price, categoryId }) => {
     return null;
   }
 
+  // const updatedProduct = Object.assign(product, { name, price, categoryId });
+  // const updatedProduct = { ...product, name, price, categoryId };
+
   product.name = name;
   product.price = price;
   product.categoryId = categoryId;
@@ -65,7 +55,7 @@ export const update = async (id, { name, price, categoryId }) => {
   await writeCatalog(catalog);
 
   return product;
-}
+};
 
 export const remove = async (id) => {
   const catalog = await readCatalog();

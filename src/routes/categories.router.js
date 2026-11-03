@@ -13,8 +13,13 @@ const readCatalog = async () => {
 };
 
 router.get("/api/categories", async (req, res) => {
-  const { categories } = await readCatalog();
-  res.json(categories);
+  try {
+    const { categories } = await readCatalog();
+    res.json(categories);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener las categorías" });
+  }
 });
 
 export default router;
