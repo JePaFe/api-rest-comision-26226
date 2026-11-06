@@ -15,11 +15,7 @@ export const getProducts = async (req, res) => {
 
 export const getProductById = async (req, res) => {
   try {
-    const productId = parseInt(req.params.id); // NaN si no es un número válido
-
-    if (isNaN(productId)) {
-      return res.status(400).json({ error: "ID de producto no válido" });
-    }
+    const productId = req.params.id;
 
     const product = await productModel.findById(productId);
 

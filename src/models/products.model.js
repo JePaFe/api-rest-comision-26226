@@ -1,7 +1,25 @@
-import { readCatalog, writeCatalog } from "./catalog.js";
+import {
+  collection,
+  addDoc,
+  getDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+  getDocsFromServer,
+  query,
+  limit,
+} from "firebase/firestore";
+import { db } from "../config/firebase.js";
+
+const productsCollection = collection(db, "products");
 
 export const findAll = async (categoryId) => {
-  const { products } = await readCatalog();
+  const productsSnapshot = await getDocs(productsCollection);
+  const products = productsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 
   if (!categoryId) {
     return products;
@@ -11,64 +29,48 @@ export const findAll = async (categoryId) => {
 };
 
 export const findById = async (id) => {
-  const { products } = await readCatalog();
+  const docRef = doc(productsCollection, id);
+  const docSnap = await getDoc(docRef);
 
-  return products.find((p) => p.id === parseInt(id));
+  if (!docSnap.exists()) {
+    return null;
+  }
+
+  return { id: docSnap.id, ...docSnap.data() };
 };
 
 export const create = async ({ name, price, categoryId }) => {
-  const catalog = await readCatalog();
-
-  const ids = catalog.products.map((p) => p.id);
-  const nextId = Math.max(0, ...ids) + 1;
-
-  const newProduct = {
-    id: nextId,
+  const productRef = await addDoc(productsCollection, {
     name,
     price,
     categoryId,
-  };
+  });
 
-  catalog.products.push(newProduct);
-
-  await writeCatalog(catalog);
-
-  return newProduct;
+  return { id: productRef.id, name, price, categoryId };
 };
 
 export const update = async (id, { name, price, categoryId }) => {
-  const catalog = await readCatalog();
+  const docRef = doc(productsCollection, id);
+  const docSnap = await getDoc(docRef);
 
-  const product = catalog.products.find((p) => p.id === parseInt(id));
-
-  if (!product) {
+  if (!docSnap.exists()) {
     return null;
   }
 
-  // const updatedProduct = Object.assign(product, { name, price, categoryId });
-  // const updatedProduct = { ...product, name, price, categoryId };
+  await updateDoc(docRef, { name, price, categoryId });
 
-  product.name = name;
-  product.price = price;
-  product.categoryId = categoryId;
-
-  await writeCatalog(catalog);
-
-  return product;
+  return { id: docSnap.id, name, price, categoryId };
 };
 
 export const remove = async (id) => {
-  const catalog = await readCatalog();
+  const docRef = doc(productsCollection, id);
+  const docSnap = await getDoc(docRef);
 
-  const index = catalog.products.findIndex((p) => p.id === parseInt(id));
-
-  if (index === -1) {
+  if (!docSnap.exists()) {
     return null;
   }
 
-  const [removedProduct] = catalog.products.splice(index, 1);
+  await deleteDoc(docRef);
 
-  await writeCatalog(catalog);
-
-  return removedProduct;
+  return { id: docSnap.id, ...docSnap.data() };
 };
