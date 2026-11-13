@@ -3,6 +3,7 @@ import cors from "cors";
 
 import productsRouter from "./src/routes/products.router.js";
 import categoriesRouter from "./src/routes/categories.router.js";
+import authRouter from "./src/routes/auth.router.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 
 app.use(categoriesRouter);
 app.use("/api/productos", productsRouter);
+app.use("/api/auth", authRouter);
 
 const PORT = 3000;
 
